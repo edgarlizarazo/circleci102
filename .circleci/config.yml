@@ -25,22 +25,22 @@ jobs:
           background: true
       - restore_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
-      - run:
-          name: Install Python deps in a venv
-          command: |
-            python3 -m venv venv
-            source venv/bin/activate
-            pip install -r requirements/dev.txt
-      - save_cache:
-          key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
-          paths:
-            - "venv"
-      - run:
-          command: |
-            source venv/bin/activate
-            python manage.py test
-      - store_artifacts:
-          path: test-reports/
-          destination: tr1
-      - store_test_results:
-          path: test-reports/
+    - run:
+        name: Install Python deps in a venv
+        command: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install -r requirements/dev.txt
+  - save_cache:
+        key: deps1-{{ .Branch }}-{{ checksum "requirements/dev.txt" }}
+        paths:
+          - "venv"
+    - run:
+        command: |
+          source venv/bin/activate
+          python manage.py test
+    - store_artifacts:
+        path: test-reports/
+        destination: tr1
+    - store_test_results:
+        path: test-reports/
